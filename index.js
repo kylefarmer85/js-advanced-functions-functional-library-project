@@ -16,10 +16,14 @@ const fi = (function() {
     },
 
     reduce: function(collection, callback, acc) {
-      const arr = Array.isArray(collection) ? collection : Object.values(collection)
-      return arr.reduce(callback, acc)
+      let arr = Array.isArray(collection) ? [...collection] : Object.values(collection)
+      let output = acc ? acc : arr.shift()
+      for(let i = 0; i < arr.length; i++){
+        output = callback(output, arr[i], arr)
+      }
+      return output
     },
-
+    
     find: function(collection, predicate) {
       const arr = Array.isArray(collection) ? collection : Object.values(collection)
       for(let i = 0;i < arr.length; i++){
@@ -50,23 +54,23 @@ const fi = (function() {
     },
 
     first: function(array, n = 1){
-      newArr = []
+      let newArr = []
       for(let i = 0; i <= (n - 1); i++){
         newArr.push(array[i])
       }
-      return newArr
+      return newArr.length > 1 ? newArr : newArr[0]
     },
 
     last: function(array, n = 1){
-      newArr = []
+      let newArr = []
       for(let i = 1; i <= n; i++){
         newArr.push(array[array.length - i])
       }
-      return newArr.reverse()
+      return newArr.length > 1 ? newArr.reverse() : newArr[0]
     },
 
     compact: function(array){
-      newArr = []
+      let newArr = []
       for(let i = 0; i < array.length; i++){
         if (array[i]){
           newArr.push(array[i])
@@ -76,7 +80,7 @@ const fi = (function() {
     },
 
     sortBy: function(array, callback) {
-      const newArr = array
+      const newArr = [...array]
       return newArr.sort(function(a, b) {
         if (callback(a) < callback(b)) {
           return -1
@@ -93,7 +97,7 @@ const fi = (function() {
     },
 
     uniq: function(array, isSorted, callback = item => item){
-      newArr = []
+      let newArr = []
       for(let i = 0; i < array.length; i++){
         if(!newArr.some(item => callback(item) === callback(array[i]))){
           newArr.push(array[i])
@@ -103,35 +107,30 @@ const fi = (function() {
     },
 
     keys: function(object){
-      arr = []
-      for(k in object){
+      let arr = []
+      for(let k in object){
         arr.push(k)
       }
       return arr
     },
 
     values: function(object){
-      arr = []
-      for(k in object){
+      let arr = []
+      for(let k in object){
         arr.push(object[k])
       }
       return arr
     },
 
     functions: function(object){
-      arr = []
-      for(k in object){
+      let arr = []
+      for(let k in object){
         if(typeof object[k] === 'function'){
           arr.push(k)
         }
       }
       return arr
     }
-
-
-
-
-
   }
 })()
 
