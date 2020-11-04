@@ -1,18 +1,24 @@
 const fi = (function() {
   return {
     libraryMethod: function() {
-      return 'Start by reading https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0'
+      console.log('Start by reading https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0')
     },
 
     each: function(collection, callback) {
       const arr = Array.isArray(collection) ? collection : Object.values(collection)
-      arr.forEach(item => callback(item))
+      for(let i = 0; i < arr.length; i++){
+        callback(arr[i])
+      }
       return collection
     },
 
     map: function(collection, callback) {
       const arr = Array.isArray(collection) ? collection : Object.values(collection)
-      return arr.map(item => callback(item))
+      let newArr = []
+      for(let i = 0; i < arr.length; i++){
+        newArr.push(callback(arr[i]))
+      }
+      return newArr
     },
 
     reduce: function(collection, callback, acc) {
